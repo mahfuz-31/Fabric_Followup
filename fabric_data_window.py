@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import pandas as pd
 def fabric_data_window(root):
 	new_window = tk.Toplevel(root)
@@ -35,30 +36,68 @@ def fabric_data_window(root):
 		if order != prev_order or index == 0:
 			orderL = tk.Label(window_frame, text=row["Order"], font=("Calibri", 12, "bold"), fg="blue")
 			styleL = tk.Label(window_frame, text=row["Style"], font=("Calibri", 12, "bold"), fg="blue")
-			order_sheet_recL = tk.Label(window_frame, text=row["Order Sheet Receive Date"], font=("Calibri", 11, 'bold'))
-			cut_startL = tk.Label(window_frame, text=row["Cut Plan Start Date"], font=("Calibri", 11, 'bold'))
-			cut_endL = tk.Label(window_frame, text=row["Cut Plan End Date"], font=("Calibri", 11, 'bold'))
+			order_sheet_recL = tk.Label(window_frame, text="O. Sheet R.: " + row["Order Sheet Receive Date"], font=("Calibri", 9))
+			cut_startL = tk.Label(window_frame, text="Cut P. Start: " + row["Cut Plan Start Date"], font=("Calibri", 9))
+			cut_endL = tk.Label(window_frame, text="Cut P. End: " + row["Cut Plan End Date"], font=("Calibri", 9))
+			buyerL = tk.Label(window_frame, text=row["Buyer"], font=("Calibri", 11, 'bold'), fg="darkgreen")
 
-			orderL.grid(row=row_idx, column=0, sticky="w", padx=5, pady=2)
-			styleL.grid(row=row_idx, column=1, sticky="w", padx=5, pady=2)
-			order_sheet_recL.grid(row=row_idx, column=2, sticky="w", padx=5, pady=2)
-			cut_startL.grid(row=row_idx, column=3, sticky="w", padx=5, pady=2)
-			cut_endL.grid(row=row_idx, column=4, sticky="w", padx=5, pady=2)
+			buyerL.grid(row=row_idx, column=0, sticky="w", padx=2, pady=2)
+			orderL.grid(row=row_idx, column=1, sticky="w", padx=2, pady=2)
+			styleL.grid(row=row_idx, column=2, sticky="w", padx=2, pady=2)
+			order_sheet_recL.grid(row=row_idx, column=3, sticky="w", padx=2, pady=2)
+			cut_startL.grid(row=row_idx, column=4, sticky="w", padx=2, pady=2)
+			cut_endL.grid(row=row_idx, column=5, sticky="w", padx=2, pady=2)
 			# Add only bottom line
 			row_idx += 1
 			separator = tk.Frame(window_frame, height=2, bd=0, relief=tk.FLAT, bg="black")
-			separator.grid(row=row_idx, column=0, columnspan=5, sticky="ew", pady=2)
+			separator.grid(row=row_idx, column=0, columnspan=6, sticky="ew", pady=2)
 			# add the below table header
 			row_idx += 1
-			headers = ["F. Color", "G. Color", "UoF", "F. Type", "GSM",]
+			headers = ["F. Color", "G. Color", "UoF", "F. Type", "GSM", "Gray Status", "F/F Status"]
 			for col_idx, header in enumerate(headers):
 				headerL = tk.Label(window_frame, text=header, font=("Calibri", 11, 'normal', 'underline'), fg="darkgreen")
-				headerL.grid(row=row_idx, column=col_idx, sticky="w", padx=5, pady=2)
+				headerL.grid(row=row_idx, column=col_idx, sticky="w", padx=2, pady=2)
 			prev_order = order
 			row_idx += 1
 
-		FcolorL = tk.Label(window_frame, text=row["F. Color"], font=("Calibri", 11, 'bold'))
-		FcolorL.grid(row=row_idx, column=0, sticky="w", padx=5, pady=2)
+		# Now add the row data
+		color_wise_data = [
+			row["F. Color"],
+			row["G. Color"],
+			row["UoF"],
+			row["F. Type"],
+			row["GSM"],
+		]
+		col_i = 0
+		for col_idx, value in enumerate(color_wise_data):
+			dataL = tk.Label(window_frame, text=value, font=("Calibri", 11))
+			dataL.grid(row=row_idx, column=col_idx, sticky="w", padx=2, pady=2)
+			col_i = col_idx
+
+		# gray fabric data
+		col_i += 1
+		gray_fabric_data = [
+			row["G/F Order With S.Note Qty"],
+			row["Net Grey Receive Qty"],
+			row["G/F Rcv Balance Qty"],
+		]
+		gray_progress = ttk.Progressbar(window_frame, orient='horizontal', length=100, mode='determinate')
+		gray_progress['maximum'] = gray_fabric_data[0] if gray_fabric_data[0] > 0 else 1  # avoid zero division
+		gray_progress['value'] = gray_fabric_data[1]
+		gray_progress.grid(row=row_idx, column=col_i, padx=2, pady=2)
+		
+		# F/F fabric data
+		col_i += 1
+		ff_fabric_data = [
+			row["F/F Order with S.Note Qty"],
+			row["F/F Delv Qty"],
+			row["F/F Delv. Balance Qty"],
+		]
+		ff_progress = ttk.Progressbar(window_frame, orient='horizontal', length=100, mode='determinate')
+		ff_progress['maximum'] = ff_fabric_data[0] if ff_fabric_data[0] > 0 else 1	# avoid zero division
+		ff_progress['value'] = ff_fabric_data[1]
+		ff_progress.grid(row=row_idx, column=col_i, padx=2, pady=2)
+		
 		row_idx += 1
 
 	# --- Enable mouse wheel scrolling ---
