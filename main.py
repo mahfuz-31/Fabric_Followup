@@ -1,9 +1,9 @@
-# Solution 1: Using Threading (Recommended)
 from tkinter import *
 from tkinter.ttk import Progressbar
 import spc_search_color_wise
 from tkinter import messagebox
 import threading
+import fabric_data_window
 
 root = Tk()
 root.title('Mahfuz\'s Fabric Followup System')
@@ -96,6 +96,8 @@ def cancel_operation():
     download_btn.config(state='normal', text='Download Data')
     progress.pack_forget()
 
-
+view_data_btn = Button(root, text='View Fabric Data', bg='blue', fg='white',
+                       activebackground='lightblue', activeforeground='white', command=lambda: fabric_data_window.fabric_data_window(root))
+view_data_btn.pack(side=RIGHT, anchor='se', pady=20, padx=20)
 root.geometry('800x600')
 root.mainloop()
