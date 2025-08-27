@@ -6,25 +6,43 @@ import threading
 import fabric_data_window
 
 root = Tk()
-root.title('Mahfuz\'s Fabric Followup System')
-w = Label(root, text='Mahfuz\'s Fabric Followup System', fg='darkgreen', font=("Playfair Display", 16, 'bold'))
+root.title('Mahfuz\'s Special Followup System')
+w = Label(root, text='Mahfuz\'s Special Followup System', fg='#054270', font=("Playfair Display", 16, 'bold'))
 w.pack(pady=5)
 
-frs_label = Label(root, text="Enter your list of FRS No:", fg='green', font=("Calibri", 11, 'bold', 'italic'))
-frs_label.place(x=5, y=40)
+fabricL = Label(root, text="Fabric Status Download", fg='#2B6936', font=("Calibri", 12, 'bold'))
+fabricL.place(x=35, y=100)
+frs_label = Label(root, text="Enter your list of FRS No:", fg='#2B6936', font=("Calibri", 9, 'italic'))
+frs_label.place(x=35, y=120)
 
 # Create a frame to hold text + scrollbar together
 text_frame = Frame(root)
-text_frame.place(x=5, y=65)
+text_frame.place(x=35, y=145)
 
 # Text widget
-text_area = Text(text_frame, wrap=WORD, width=20, height=25, font=("Arial", 11))
+text_area = Text(text_frame, wrap=WORD, width=20, height=23, font=("Arial", 11))
 text_area.pack(side=LEFT, fill=BOTH, expand=True)
 
 # Add a Scrollbar
 scrollbar = Scrollbar(text_frame, command=text_area.yview)
 scrollbar.pack(side=RIGHT, fill=Y)
 text_area.config(yscrollcommand=scrollbar.set)
+
+# sewing area
+sewingL = Label(root, text="Sewing Status Download", fg='#2B6469', font=("Calibri", 12, 'bold'))
+sewingL.place(x=280, y=100)
+sfrs_label = Label(root, text="Enter your list of FRS No:", fg='#2B6469', font=("Calibri", 9, 'italic'))
+sfrs_label.place(x=280, y=120)
+# Create a frame to hold text + scrollbar together
+stext_frame = Frame(root)
+stext_frame.place(x=280, y=145)
+# Text widget
+stext_area = Text(stext_frame, wrap=WORD, width=20, height=23, font=("Arial", 11))
+stext_area.pack(side=LEFT, fill=BOTH, expand=True)
+# Add a Scrollbar
+sscrollbar = Scrollbar(stext_frame, command=stext_area.yview)
+sscrollbar.pack(side=RIGHT, fill=Y)
+stext_area.config(yscrollcommand=sscrollbar.set)
 
 # Progress bar
 progress = Progressbar(root, orient=HORIZONTAL, length=500, mode='determinate')
@@ -80,8 +98,9 @@ def on_download():
 
 download_btn = Button(
     root, 
+    font=('Calibri', 9, 'bold'),
     text='Download Data', 
-    bg='green',     
+    bg='#2E763A',     
     fg='white',
     activebackground='lightgreen', 
     activeforeground='white',
@@ -96,8 +115,8 @@ def cancel_operation():
     download_btn.config(state='normal', text='Download Data')
     progress.pack_forget()
 
-view_data_btn = Button(root, text='View Fabric Data', bg='blue', fg='white',
+view_data_btn = Button(root, text='View Fabric Data', font=('Calibri', 9, 'bold'), bg='#3B974A', fg='white',
                        activebackground='lightblue', activeforeground='white', command=lambda: fabric_data_window.fabric_data_window(root))
-view_data_btn.pack(side=RIGHT, anchor='se', pady=20, padx=20)
-root.geometry('800x600')
+view_data_btn.pack(side=LEFT, anchor='se', pady=20, padx=0)
+root.geometry('500x600')
 root.mainloop()

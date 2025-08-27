@@ -3,7 +3,7 @@ from tkinter import ttk
 import pandas as pd
 def fabric_data_window(root):
 	new_window = tk.Toplevel(root)
-	new_window.title("Mahfuz's Fabric Data Window System")
+	new_window.title("Color wise fabric status")
 	new_window.geometry("1100x720")
 
 	# --- Create Canvas + Scrollbar ---
