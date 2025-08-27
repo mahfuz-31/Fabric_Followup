@@ -12,6 +12,7 @@ def convert_to_number(s):
 def spc_search_color_wise(root, progress, orders):
     # Show progress bar in DETERMINATE mode
     progress.pack(pady=10)
+    progress.pack_configure(anchor='center')
     progress.stop()  # in case it was spinning before
     orders = list(set(orders))
     orders = [o.strip() for o in orders if o.strip()]
@@ -159,5 +160,6 @@ def spc_search_color_wise(root, progress, orders):
     # Done
     progress['value'] = total
     root.update_idletasks()
-    progress.pack_forget()
+    progress.stop()
+    # progress.pack_forget()
     

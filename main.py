@@ -7,7 +7,7 @@ import fabric_data_window
 
 root = Tk()
 root.title('Mahfuz\'s Special Followup System')
-w = Label(root, text='Mahfuz\'s Special Followup System', fg='#054270', font=("Playfair Display", 16, 'bold'))
+w = Label(root, text='Mahfuz\'s Special Follow-up System', fg='#054270', font=("Cooper Black", 18, ))
 w.pack(pady=5)
 
 fabricL = Label(root, text="Fabric Status Download", fg='#2B6936', font=("Calibri", 12, 'bold'))
@@ -45,7 +45,9 @@ sscrollbar.pack(side=RIGHT, fill=Y)
 stext_area.config(yscrollcommand=sscrollbar.set)
 
 # Progress bar
-progress = Progressbar(root, orient=HORIZONTAL, length=500, mode='determinate')
+progress = Progressbar(root, orient=HORIZONTAL, length=350, mode='determinate')
+progress.pack(pady=10)
+progress.pack_configure(anchor='center')
 
 
 def download_thread():
@@ -71,21 +73,8 @@ def download_thread():
     finally:
         # Re-enable button and reset text
         root.after(0, lambda: download_btn.config(state='normal', text='Download Data'))
-        root.after(0, cancel_btn.pack_forget)
 
 def on_download():
-    global cancel_btn  # make it accessible later to hide
-    cancel_btn = Button(
-        root, 
-        text='Cancel', 
-        bg='red', 
-        fg='white',
-        activebackground='lightcoral', 
-        activeforeground='white',
-        command=cancel_operation
-    )
-    cancel_btn.pack(side=LEFT, anchor='sw', pady=20, padx=5)
-
     """Start download in separate thread"""
     if text_area.get("1.0", END).strip():
         thread = threading.Thread(target=download_thread, daemon=True)
@@ -93,8 +82,6 @@ def on_download():
     else:
         messagebox.showwarning("Warning", "Please enter some FRS numbers!")
         # only hide if warning
-        cancel_btn.pack_forget()
-
 
 download_btn = Button(
     root, 
@@ -108,15 +95,16 @@ download_btn = Button(
 )
 download_btn.pack(side=LEFT, anchor='sw', pady=20, padx=20)
 
-# Add a cancel button (optional)
-def cancel_operation():
-    """Note: This is a simple implementation. For true cancellation, 
-    you'd need to modify the spc_search_color_wise function"""
-    download_btn.config(state='normal', text='Download Data')
-    progress.pack_forget()
-
 view_data_btn = Button(root, text='View Fabric Data', font=('Calibri', 9, 'bold'), bg='#3B974A', fg='white',
-                       activebackground='lightblue', activeforeground='white', command=lambda: fabric_data_window.fabric_data_window(root))
+                       activebackground='lightgreen', activeforeground='white', command=lambda: fabric_data_window.fabric_data_window(root))
 view_data_btn.pack(side=LEFT, anchor='se', pady=20, padx=0)
+
+
+
+sew_download_btn = Button(root, font=('Calibri', 9, 'bold'),
+                          text='Download Data', bg='#2B6469', fg='white', activebackground='#3D8D94')
+sew_download_btn.pack(side=LEFT, anchor='sw', pady=20, padx=40)
+
+
 root.geometry('500x600')
 root.mainloop()
