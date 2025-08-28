@@ -12,6 +12,7 @@ def convert_to_number(s):
 def spc_search_color_wise(root, progress, orders):
     # Show progress bar in DETERMINATE mode
     progress.pack(pady=10)
+    progress.pack_configure(anchor='center')
     progress.stop()  # in case it was spinning before
     orders = list(set(orders))
     orders = [o.strip() for o in orders if o.strip()]
@@ -24,8 +25,6 @@ def spc_search_color_wise(root, progress, orders):
     # Configure determinate progress
     progress.config(mode='determinate', maximum=total, value=0)
     root.update_idletasks()
-
-    print("Orders:", orders)
 
     df = pd.DataFrame()
     columns = ["Buyer", "Order", 'Style', 'UoF', 'F. Color', 'G. Color', 'Y. Type', 'F. Type', 'GSM', 'Dia',
@@ -159,5 +158,6 @@ def spc_search_color_wise(root, progress, orders):
     # Done
     progress['value'] = total
     root.update_idletasks()
-    progress.pack_forget()
+    progress.stop()
+    # progress.pack_forget()
     
