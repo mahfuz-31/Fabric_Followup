@@ -26,8 +26,6 @@ def spc_search_color_wise(root, progress, orders):
     progress.config(mode='determinate', maximum=total, value=0)
     root.update_idletasks()
 
-    print("Orders:", orders)
-
     df = pd.DataFrame()
     columns = ["Buyer", "Order", 'Style', 'UoF', 'F. Color', 'G. Color', 'Y. Type', 'F. Type', 'GSM', 'Dia',
                'G/F Order With S.Note Qty', 'G/F S.Note Qty', 'Net Grey Receive Qty', 'G/F Rcv Balance Qty',

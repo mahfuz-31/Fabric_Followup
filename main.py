@@ -54,7 +54,7 @@ def download_thread():
     """Function to run in separate thread"""
     try:
         # Update UI to show processing state
-        root.after(0, lambda: download_btn.config(state='disabled', text='Processing...'))
+        root.after(0, lambda: download_btn.config(state='disabled', text='Downloading...'))
         
         # Get the orders from text area
         orders = text_area.get("1.0", END).strip().split('\n')
@@ -99,10 +99,41 @@ view_data_btn = Button(root, text='View Fabric Data', font=('Calibri', 9, 'bold'
                        activebackground='lightgreen', activeforeground='white', command=lambda: fabric_data_window.fabric_data_window(root))
 view_data_btn.pack(side=LEFT, anchor='se', pady=20, padx=0)
 
+def sew_download_thread():
+    """Function to run in separate thread for sewing data"""
+    try:
+        # Update UI to show processing state
+        root.after(0, lambda: sew_download_btn.config(state='disabled', text='Downloading...'))
+        
+        # Get the orders from sewing text area
+        orders = stext_area.get("1.0", END).strip().split('\n')
+        
+        # Run the main function from garments_sp_search module
+        import garments_sp_search
+        garments_sp_search.garments_sp_search(root, progress, orders)
+        
+        # Success - update UI on main thread
+        root.after(0, lambda: messagebox.showinfo("Completed", "Sewing data download completed!"))
+        root.after(0, lambda: stext_area.delete("1.0", END))
+        
+    except Exception as e:
+        # Error handling - update UI on main thread
+        root.after(0, lambda: messagebox.showerror("Error", f"An error occurred: {str(e)}"))
+    
+    finally:
+        # Re-enable button and reset text
+        root.after(0, lambda: sew_download_btn.config(state='normal', text='Download Data'))
 
+def sew_on_download():
+    if stext_area.get("1.0", END).strip():
+        thread = threading.Thread(target=sew_download_thread, daemon=True)
+        thread.start()
+    else:
+        messagebox.showwarning("Warning", "Please enter some FRS numbers!")
+        # only hide if warning
 
 sew_download_btn = Button(root, font=('Calibri', 9, 'bold'),
-                          text='Download Data', bg='#2B6469', fg='white', activebackground='#3D8D94')
+                          text='Download Data', bg='#2B6469', fg='white', activebackground='#3D8D94', command=sew_on_download)
 sew_download_btn.pack(side=LEFT, anchor='sw', pady=20, padx=40)
 
 

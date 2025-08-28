@@ -3,7 +3,18 @@ import requests as rq
 from bs4 import BeautifulSoup as bs
 
 def garments_sp_search(root, progress, orders):
+    progress.pack(pady=10)
+    progress.pack_configure(anchor='center')
+    progress.stop()  # in case it was spinning before
+    orders = list(set(orders))
+    orders = [o.strip() for o in orders if o.strip()]
     no_of_orders = len(orders)
+    if no_of_orders == 0:
+        progress.pack_forget()
+        return
+    progress.config(mode='determinate', maximum=no_of_orders, value=0)
+    root.update_idletasks()
+
     result_df = pd.DataFrame()
     columns = ['Order No',	'Buyer',	'Order Qty (Pcs)',	'Cutting Qty (Pcs)',	'Cutting Rejection (Pcs)',	'Panel Rejection',	'Input Qty (Pcs)',	'Sewing Rejection (Pcs)',	'Output Qty (Pcs)',	'Finishing Rejection (Pcs)',	'Poly Qty (Pcs)',	'Leftover/Rej Qty (Pcs)',	'Floor Shipped Qty (Pcs)',	'Ex-Factory Shipped Qty (Pcs)', 'Prod Floor']
     result_df = result_df.reindex(columns=result_df.columns.tolist() + columns)
@@ -41,25 +52,33 @@ def garments_sp_search(root, progress, orders):
             if len(row) == 5:
                 result_df.loc[idx, 'Prod Floor'] = row[1]
         idx += 1
+        progress['value'] += idx
+        root.update_idletasks()
+    try:
+        result_df.to_excel('garments_status_output.xlsx', index=False)
 
-    result_df.to_excel('output.xlsx', index=False)
+        from openpyxl import load_workbook
+        from openpyxl.styles import Border, Side, Alignment
 
-    from openpyxl import load_workbook
-    from openpyxl.styles import Border, Side, Alignment
+        wb = load_workbook('garments_status_output.xlsx')
 
-    wb = load_workbook('output.xlsx')
+        ws = wb['Sheet1']
 
-    ws = wb['Sheet1']
+        border = Border(left=Side(style='thin', color='0c8748'),
+                        right=Side(style='thin', color='0c8748'),
+                        top=Side(style='thin', color='0c8748'),
+                        bottom=Side(style='thin', color='0c8748'))
 
-    border = Border(left=Side(style='thin', color='0c8748'),
-                    right=Side(style='thin', color='0c8748'),
-                    top=Side(style='thin', color='0c8748'),
-                    bottom=Side(style='thin', color='0c8748'))
+        align = Alignment(horizontal='center', vertical='center', wrap_text=True)
 
-    align = Alignment(horizontal='center', vertical='center', wrap_text=True)
-
-    for row in ws.iter_rows():
-        for cell in row:
-            cell.border = border
-            cell.alignment = align
-    wb.save('output.xlsx')
+        for row in ws.iter_rows():
+            for cell in row:
+                cell.border = border
+                cell.alignment = align
+        wb.save('garments_status_output.xlsx')
+    except Exception as e:
+        import tkinter.messagebox as msgbox
+        msgbox.showerror("Error saving excel file: ", str(e))
+    progress['value'] = no_of_orders
+    root.update_idletasks()
+    progress.stop()
