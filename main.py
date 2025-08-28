@@ -4,6 +4,7 @@ import spc_search_color_wise
 from tkinter import messagebox
 import threading
 import fabric_data_window
+import garments_data_window
 
 root = Tk()
 root.title('Mahfuz\'s Special Followup System')
@@ -136,6 +137,9 @@ sew_download_btn = Button(root, font=('Calibri', 9, 'bold'),
                           text='Download Data', bg='#2B6469', fg='white', activebackground='#3D8D94', command=sew_on_download)
 sew_download_btn.pack(side=LEFT, anchor='sw', pady=20, padx=40)
 
+view_sew_data_btn = Button(root, text='View Sewing Data', font=('Calibri', 9, 'bold'), bg='#3B6D70', fg='white',
+                           activebackground='#3D8D94', activeforeground='white', command=lambda: garments_data_window.fabric_data_window(root))
+view_sew_data_btn.pack(side=LEFT, anchor='sw', pady=20, padx=0)
 
 root.geometry('500x600')
 root.mainloop()
