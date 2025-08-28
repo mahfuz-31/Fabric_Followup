@@ -4,12 +4,12 @@ import pandas as pd
 def fabric_data_window(root):
   new_window = tk.Toplevel(root)
   new_window.title("Garments Status Data")
-  new_window.geometry("1100x720")
+  new_window.geometry("1300x730")
 
   # --- Your Data ---
   headers = [
     ('Order No', 9),
-    ('Buyer', 18),
+    ('Buyer', 15),
     ('Order Qty', 8),
     ('Cutting Qty', 18),
     ('Input Qty', 18),
@@ -33,7 +33,7 @@ def fabric_data_window(root):
   table_frame = tk.Frame(new_window)
   table_frame.grid(row=1, column=0, columnspan=len(headers) + 1, sticky="nsew")
 
-  canvas = tk.Canvas(table_frame, height=600)
+  canvas = tk.Canvas(table_frame, height=690)
   scrollbar = tk.Scrollbar(table_frame, orient="vertical", command=canvas.yview)
   scrollable_frame = tk.Frame(canvas)
 
