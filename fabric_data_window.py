@@ -85,7 +85,7 @@ def fabric_data_window(root):
 		gbookL = tk.Label(window_frame, text=gray_fabric_data[0], font=("Calibri", 11))
 		gbookL.grid(row=row_idx, column=col_i, sticky="w", padx=2, pady=2)
 		col_i += 1
-		gray_progress = ttk.Progressbar(window_frame, orient='horizontal', length=100, mode='determinate')
+		gray_progress = ttk.Progressbar(window_frame, orient='horizontal', length=120, mode='determinate')
 		gray_progress['maximum'] = gray_fabric_data[0] if gray_fabric_data[0] > 0 else 1  # avoid zero division
 		gray_progress['value'] = gray_fabric_data[1]
 		gray_progress.grid(row=row_idx, column=col_i, padx=2, pady=2)
@@ -100,7 +100,7 @@ def fabric_data_window(root):
 		ffbookL = tk.Label(window_frame, text=ff_fabric_data[0], font=("Calibri", 11))
 		ffbookL.grid(row=row_idx, column=col_i, sticky="w", padx=2, pady=2)
 		col_i += 1
-		ff_progress = ttk.Progressbar(window_frame, orient='horizontal', length=100, mode='determinate')
+		ff_progress = ttk.Progressbar(window_frame, orient='horizontal', length=120, mode='determinate')
 		ff_progress['maximum'] = ff_fabric_data[0] if ff_fabric_data[0] > 0 else 1	# avoid zero division
 		ff_progress['value'] = ff_fabric_data[1]
 		ff_progress.grid(row=row_idx, column=col_i, padx=2, pady=2)

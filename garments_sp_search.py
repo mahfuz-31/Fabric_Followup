@@ -16,7 +16,7 @@ def garments_sp_search(root, progress, orders):
     root.update_idletasks()
 
     result_df = pd.DataFrame()
-    columns = ['Order No',	'Buyer',	'Order Qty (Pcs)',	'Cutting Qty (Pcs)',	'Cutting Rejection (Pcs)',	'Panel Rejection',	'Input Qty (Pcs)',	'Sewing Rejection (Pcs)',	'Output Qty (Pcs)',	'Finishing Rejection (Pcs)',	'Poly Qty (Pcs)',	'Leftover/Rej Qty (Pcs)',	'Floor Shipped Qty (Pcs)',	'Ex-Factory Shipped Qty (Pcs)', 'Prod Floor']
+    columns = ['Order No',	'Buyer',	'Order Qty', 'Cutting Qty',	'Cutting Rejection',	'Panel Rejection',	'Input Qty',	'Sewing Rejection',	'Output Qty',	'Finishing Rejection',	'Poly Qty',	'Leftover/Rej Qty',	'Floor Shipped Qty',	'Ex-Factory Shipped Qty']
     result_df = result_df.reindex(columns=result_df.columns.tolist() + columns)
 
     idx = 0
@@ -39,20 +39,8 @@ def garments_sp_search(root, progress, orders):
             else:
                 result_df.loc[idx, col] = result_row[i]
             i += 1
-        
-        
-        inp_url = 'http://192.168.1.150/MIS365/PHPReports/dbl/view.php?page=outputNew&m=Unit%20wise%20Output%20Information&w=900&OrderNo=' + str(order)
-        response = rq.get(inp_url)
-        html_content = bs(response.content, 'html.parser')
-        rows = []
-        for row in html_content.find_all('tr'):
-            row_data = [cell.get_text(strip=True) for cell in row.find_all('td')]
-            rows.append(row_data)
-        for row in rows:
-            if len(row) == 5:
-                result_df.loc[idx, 'Prod Floor'] = row[1]
         idx += 1
-        progress['value'] += idx
+        progress['value'] = idx
         root.update_idletasks()
     try:
         result_df.to_excel('garments_status_output.xlsx', index=False)
