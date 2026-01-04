@@ -4,7 +4,7 @@ import pandas as pd
 def fabric_data_window(root):
 	new_window = tk.Toplevel(root)
 	new_window.title("Color wise fabric status")
-	new_window.geometry("1100x720")
+	new_window.geometry("1300x720")
 
 	# --- Create Canvas + Scrollbar ---
 	canvas = tk.Canvas(new_window)

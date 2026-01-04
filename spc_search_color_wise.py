@@ -60,7 +60,7 @@ def spc_search_color_wise(root, progress, orders):
 
                     df.loc[row_idx, 'Buyer'] = rows[3][0] if len(rows) > 3 else ""
                     df.loc[row_idx, 'Order'] = rows[3][1] if len(rows) > 3 and len(rows[3]) > 1 else ""
-                    df.loc[row_idx, 'Style'] = rows[3][2] if len(rows) > 3 and len(rows[3]) > 2 else ""
+                    df.loc[row_idx, 'Style'] = rows[3][3] if len(rows) > 3 and len(rows[3]) > 2 else ""
                     df.loc[row_idx, 'UoF'] = row[1] if len(row) > 1 else ""
                     df.loc[row_idx, 'F. Color'] = row[2][0:row[2].find('(')] if len(row) > 2 and '(' in row[2] else (row[2] if len(row) > 2 else "")
                     df.loc[row_idx, 'G. Color'] = row[3] if len(row) > 3 else ""
